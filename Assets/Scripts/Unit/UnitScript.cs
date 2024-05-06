@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class UnitScript : MonoBehaviour
 {
@@ -21,10 +22,19 @@ public class UnitScript : MonoBehaviour
     [SerializeField] private UnitType TypeOfUnit;
     [SerializeField] private UnitState TypeOfState;
 
+    [SerializeField] private NavMeshAgent agent;
+
+    private GameObject Forest;
+    private GameObject Quarry;
+    private GameObject Home;
 
     // Start is called before the first frame update
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+
         MaxHP = unit.UnitMaxHP;
         MaxInventorySpace = unit.UnitMaxInventorySpace;
 
@@ -34,6 +44,7 @@ public class UnitScript : MonoBehaviour
 
         Damage = unit.UnitAtk;
         MoveSpeed = unit.UnitMoveSpd;
+        agent.speed = MoveSpeed;
         CollectionSpeed = unit.UnitCollectionSpeed;
 
         TypeOfUnit = unit.typeOfUnit;
@@ -43,5 +54,8 @@ public class UnitScript : MonoBehaviour
     void Update()
     {
         Debug.Log("I am a " + TypeOfUnit.ToString());
+
+        
+
     }
 }

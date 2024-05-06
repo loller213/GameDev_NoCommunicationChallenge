@@ -13,7 +13,8 @@ public enum UnitType
 public enum UnitState
 {
     Resting,
-    Farming,
+    Cutting,
+    Mining,
     Fighting,
     Transferring
 }
@@ -30,7 +31,7 @@ public class UnitScriptable : ScriptableObject
 
     public int UnitAtk = 2;
     public float UnitMoveSpd = 1.5f;
-    public float UnitCollectionSpeed = 0.5f;
+    public float UnitCollectionSpeed = 1f;
 
     public int WoodCollected = 0;
     public int StoneCollected = 0;

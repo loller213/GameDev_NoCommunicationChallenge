@@ -17,7 +17,10 @@ MonoBehaviour:
   UnitLevelCap: 10
   UnitLevel: 1
   UnitExp: 0
+  UnitAtk: 2
+  UnitMoveSpd: 1.5
+  UnitCollectionSpeed: 1
   WoodCollected: 0
   StoneCollected: 0
-  typeOfUnit: 1
+  typeOfUnit: 0
   typeOfUnitState: 0
