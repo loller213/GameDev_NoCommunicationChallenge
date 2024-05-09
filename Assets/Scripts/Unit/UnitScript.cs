@@ -5,28 +5,36 @@ using UnityEngine.AI;
 
 public class UnitScript : MonoBehaviour
 {
+    private static UnitScript _instance;
+    public static UnitScript Instance => _instance;
 
     [SerializeField] private UnitScriptable unit;
-
-    [SerializeField] private int MaxHP;
-    [SerializeField] private int MaxInventorySpace;
-
-    [SerializeField] private int MaxLevel;
-    [SerializeField] private int CurrentLevel;
-    [SerializeField] private int CurrentExp;
-
-    [SerializeField] private int Damage;
-    [SerializeField] private float MoveSpeed;
-    [SerializeField] private float CollectionSpeed;
 
     [SerializeField] private UnitType TypeOfUnit;
     [SerializeField] private UnitState TypeOfState;
 
     [SerializeField] private NavMeshAgent agent;
 
-    private GameObject Forest;
-    private GameObject Quarry;
-    private GameObject Home;
+    [SerializeField] private GameObject Forest;
+    [SerializeField] private GameObject Quarry;
+    [SerializeField] private GameObject Home;
+
+    //Mouse Input Related
+    [SerializeField] private Vector3 target;
+
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+        //Event
+        EventManager.ON_CLICK_SET_DESTINATION += SetDestination;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -35,27 +43,98 @@ public class UnitScript : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
-        MaxHP = unit.UnitMaxHP;
-        MaxInventorySpace = unit.UnitMaxInventorySpace;
-
-        MaxLevel = unit.UnitLevelCap;
-        CurrentLevel = unit.UnitLevel;
-        CurrentExp = unit.UnitExp;
-
-        Damage = unit.UnitAtk;
-        MoveSpeed = unit.UnitMoveSpd;
-        agent.speed = MoveSpeed;
-        CollectionSpeed = unit.UnitCollectionSpeed;
-
         TypeOfUnit = unit.typeOfUnit;
+
+        Forest = GameObject.FindGameObjectWithTag("Forest");
+        Quarry = GameObject.FindGameObjectWithTag("Quarry");
+        Home = GameObject.FindGameObjectWithTag("Home");
+
+        target = transform.position;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("I am a " + TypeOfUnit.ToString());
-
-        
-
+        if (Input.GetMouseButtonDown(0))
+        {
+            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            target.z = transform.position.z;
+            agent.SetDestination(target);
+        }
     }
+
+    public void SetDestination(GameObject target)
+    {
+        agent.SetDestination(target.transform.position);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Collided");
+        agent.ResetPath();
+        if (collision.CompareTag("Forest"))
+        {
+            TypeOfState = UnitState.Cutting;
+            ResourcesManager.Instance.StartAddingWood();
+        }
+        else if (collision.CompareTag("Quarry"))
+        {
+            TypeOfState = UnitState.Mining;
+            ResourcesManager.Instance.StartAddingStone();
+        }
+        else if (collision.CompareTag("Home"))
+        {
+            Debug.Log("Resting");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Forest"))
+        {
+            TypeOfState = UnitState.Resting;
+            ResourcesManager.Instance.StopAddingWood();
+        }else if (collision.CompareTag("Quarry"))
+        {
+            TypeOfState = UnitState.Resting;
+            ResourcesManager.Instance.StopAddingStone();
+        }
+    }
+
+    public UnitState ReturnUnitState()
+    {
+        return TypeOfState;
+    }
+
+    public int GetSpeed()
+    {
+        return unit.UnitCollectionSpeed;
+    }
+
+    public int GetWood()
+    {
+        return unit.WoodCollected;
+    }
+
+    public int GetStone()
+    {
+        return unit.StoneCollected;
+    }
+
+    public void SetWood(int wood)
+    {
+        unit.StoneCollected += wood;
+    }
+
+    public void SetStone(int stone)
+    {
+        unit.StoneCollected += stone;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.ON_CLICK_SET_DESTINATION -= SetDestination;
+    }
+
 }

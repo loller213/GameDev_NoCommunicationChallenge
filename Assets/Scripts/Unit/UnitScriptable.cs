@@ -23,7 +23,6 @@ public enum UnitState
 public class UnitScriptable : ScriptableObject
 {
     public int UnitMaxHP = 10;
-    public int UnitMaxInventorySpace = 2;
 
     public int UnitLevelCap = 10;
     public int UnitLevel= 1;
@@ -31,7 +30,7 @@ public class UnitScriptable : ScriptableObject
 
     public int UnitAtk = 2;
     public float UnitMoveSpd = 1.5f;
-    public float UnitCollectionSpeed = 1f;
+    public int UnitCollectionSpeed = 1;
 
     public int WoodCollected = 0;
     public int StoneCollected = 0;

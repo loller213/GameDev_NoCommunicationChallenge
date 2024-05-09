@@ -13,13 +13,12 @@ MonoBehaviour:
   m_Name: Miner
   m_EditorClassIdentifier: 
   UnitMaxHP: 10
-  UnitMaxInventorySpace: 2
   UnitLevelCap: 10
   UnitLevel: 1
   UnitExp: 0
   UnitAtk: 2
-  UnitMoveSpd: 1.5
-  UnitCollectionSpeed: 1
+  UnitMoveSpd: 3
+  UnitCollectionSpeed: 2
   WoodCollected: 0
   StoneCollected: 0
   typeOfUnit: 0
