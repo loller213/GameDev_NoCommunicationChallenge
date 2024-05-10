@@ -23,6 +23,7 @@ public class UnitScript : MonoBehaviour
 
     //Mouse Input Related
     [SerializeField] private Vector3 target;
+    [SerializeField] private LayerMask inputLayerMask;
 
     private void Awake()
     {
@@ -41,10 +42,16 @@ public class UnitScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Used to select layers that the mouse will interact with
+        Camera.main.eventMask = inputLayerMask;
+
+        //NavMesh 2D
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
 
+        //UnitStats
+        agent.speed = unit.UnitMoveSpd;
         TypeOfUnit = unit.typeOfUnit;
 
         Forest = GameObject.FindGameObjectWithTag("Forest");
@@ -76,22 +83,23 @@ public class UnitScript : MonoBehaviour
     {
         Debug.Log("Collided");
 
-        if (collision.CompareTag(targetTag))
+        if (collision.CompareTag(targetTag) && !collision.CompareTag("Enemy"))
         {
             agent.ResetPath();
 
-            if (collision.CompareTag("Forest"))
+            if (collision.CompareTag(Forest.tag))
             {
                 TypeOfState = UnitState.Cutting;
                 ResourcesManager.Instance.StartAddingWood();
             }
-            else if (collision.CompareTag("Quarry"))
+            else if (collision.CompareTag(Quarry.tag))
             {
                 TypeOfState = UnitState.Mining;
                 ResourcesManager.Instance.StartAddingStone();
             }
-            else if (collision.CompareTag("Home"))
+            else if (collision.CompareTag(Home.tag))
             {
+                TypeOfState = UnitState.Resting;
                 Debug.Log("Resting");
             }
         }
@@ -100,15 +108,21 @@ public class UnitScript : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Forest"))
+        if (collision.CompareTag(Forest.tag))
         {
-            TypeOfState = UnitState.Resting;
             ResourcesManager.Instance.StopAddingWood();
-        }else if (collision.CompareTag("Quarry"))
+        }
+        else if (collision.CompareTag(Quarry.tag))
         {
-            TypeOfState = UnitState.Resting;
             ResourcesManager.Instance.StopAddingStone();
         }
+        //else if (collision.CompareTag(Home.tag))
+        //{
+            
+        //}
+        TypeOfState = UnitState.Idle;
+        targetTag = "";
+
     }
 
     public UnitState ReturnUnitState()

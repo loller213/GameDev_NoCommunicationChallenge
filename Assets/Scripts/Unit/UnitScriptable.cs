@@ -12,6 +12,7 @@ public enum UnitType
 
 public enum UnitState
 {
+    Idle,
     Resting,
     Cutting,
     Mining,
@@ -30,11 +31,15 @@ public class UnitScriptable : ScriptableObject
 
     public int UnitAtk = 2;
     public float UnitMoveSpd = 1.5f;
-    public int UnitCollectionSpeed = 1;
+    public int UnitCollectionSpeed = 1; //Increases amount of resources gathered per second
+
+    public int HP_UnitRegenAmt = 1;
+    public int HP_UnitRegenSpd = 3; //Higher = Slower
 
     public int WoodCollected = 0;
     public int StoneCollected = 0;
 
     public UnitType typeOfUnit;
     public UnitState typeOfUnitState;
+
 }

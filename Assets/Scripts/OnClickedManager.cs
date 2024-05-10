@@ -7,7 +7,7 @@ public class OnClickedManager : MonoBehaviour
     //On click destination
     private void OnMouseDown()
     {
-        EventManager.ON_CLICK_SET_DESTINATION?.Invoke(gameObject);
+        EventManager.ON_CLICK_SET_DESTINATION?.Invoke(this.gameObject);
     }
 
 }

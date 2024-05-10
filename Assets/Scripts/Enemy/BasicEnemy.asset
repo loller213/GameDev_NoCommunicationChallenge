@@ -9,17 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8db2bfef22565545b3d7ff939d9bbd2, type: 3}
-  m_Name: BasicUnit
+  m_Script: {fileID: 11500000, guid: 9ea678202d079dd4f892019844b68f06, type: 3}
+  m_Name: BasicEnemy
   m_EditorClassIdentifier: 
-  UnitMaxHP: 10
-  UnitLevelCap: 5
-  UnitLevel: 1
-  UnitExp: 0
-  UnitAtk: 2
-  UnitMoveSpd: 5
-  UnitCollectionSpeed: 1
-  WoodCollected: 0
-  StoneCollected: 0
-  typeOfUnit: 0
-  typeOfUnitState: 0
+  typeOfEnemy: 0
+  stateOfEnemy: 0
+  enemyMaxHP: 5
+  enemyDamage: 1
+  enemyAtkSpd: 0.5
+  enemyMoveSpd: 2

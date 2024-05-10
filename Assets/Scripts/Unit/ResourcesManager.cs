@@ -7,8 +7,6 @@ public class ResourcesManager : MonoBehaviour
     private static ResourcesManager _instance;
     public static ResourcesManager Instance => _instance;
 
-    private UnitState state;
-
     private void Awake()
     {
         if (_instance == null)
