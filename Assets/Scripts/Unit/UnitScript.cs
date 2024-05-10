@@ -19,6 +19,8 @@ public class UnitScript : MonoBehaviour
     [SerializeField] private GameObject Quarry;
     [SerializeField] private GameObject Home;
 
+    [SerializeField] private string targetTag;
+
     //Mouse Input Related
     [SerializeField] private Vector3 target;
 
@@ -67,26 +69,33 @@ public class UnitScript : MonoBehaviour
     public void SetDestination(GameObject target)
     {
         agent.SetDestination(target.transform.position);
+        targetTag = target.tag;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Collided");
-        agent.ResetPath();
-        if (collision.CompareTag("Forest"))
+
+        if (collision.CompareTag(targetTag))
         {
-            TypeOfState = UnitState.Cutting;
-            ResourcesManager.Instance.StartAddingWood();
+            agent.ResetPath();
+
+            if (collision.CompareTag("Forest"))
+            {
+                TypeOfState = UnitState.Cutting;
+                ResourcesManager.Instance.StartAddingWood();
+            }
+            else if (collision.CompareTag("Quarry"))
+            {
+                TypeOfState = UnitState.Mining;
+                ResourcesManager.Instance.StartAddingStone();
+            }
+            else if (collision.CompareTag("Home"))
+            {
+                Debug.Log("Resting");
+            }
         }
-        else if (collision.CompareTag("Quarry"))
-        {
-            TypeOfState = UnitState.Mining;
-            ResourcesManager.Instance.StartAddingStone();
-        }
-        else if (collision.CompareTag("Home"))
-        {
-            Debug.Log("Resting");
-        }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -124,7 +133,7 @@ public class UnitScript : MonoBehaviour
 
     public void SetWood(int wood)
     {
-        unit.StoneCollected += wood;
+        unit.WoodCollected += wood;
     }
 
     public void SetStone(int stone)

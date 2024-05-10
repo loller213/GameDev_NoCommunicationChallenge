@@ -38,7 +38,7 @@ public class ResourcesManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             UnitScript.Instance.SetWood(UnitScript.Instance.GetSpeed());
-            Debug.Log("Getting Wood: " + UnitScript.Instance.GetWood());
+            EventManager.UPDATE_WOOD_UI?.Invoke();
         }
     }
 
@@ -59,7 +59,7 @@ public class ResourcesManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             UnitScript.Instance.SetStone(UnitScript.Instance.GetSpeed());
-            Debug.Log("Getting Stone: " + UnitScript.Instance.GetStone());
+            EventManager.UPDATE_STONE_UI?.Invoke();
         }
     }
 

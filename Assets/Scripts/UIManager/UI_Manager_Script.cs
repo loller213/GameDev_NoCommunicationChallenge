@@ -7,16 +7,36 @@ public class UI_Manager_Script : MonoBehaviour
 {
 
     [SerializeField] private UnitScriptable unit;
-    
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] private TextMeshProUGUI stoneUI;
+    [SerializeField] private TextMeshProUGUI woodUI;
+
+    private void Awake()
     {
-        
+        EventManager.UPDATE_WOOD_UI += UpdateWoodUI;
+        EventManager.UPDATE_STONE_UI += UpdateStoneUI;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        woodUI.text = "Wood: " + unit.WoodCollected;
+        stoneUI.text = "Stone: " + unit.StoneCollected;
     }
+
+    public void UpdateWoodUI()
+    {
+        woodUI.text = "Wood: " + unit.WoodCollected;
+    }
+
+    public void UpdateStoneUI()
+    {
+        stoneUI.text = "Stone: " + unit.StoneCollected;
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.UPDATE_WOOD_UI -= UpdateWoodUI;
+        EventManager.UPDATE_STONE_UI -= UpdateStoneUI;
+    }
+
 }
