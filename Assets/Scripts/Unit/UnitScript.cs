@@ -73,6 +73,7 @@ public class UnitScript : MonoBehaviour
         }
     }
 
+    //Used in On Clicked Manager 
     public void SetDestination(GameObject target)
     {
         agent.SetDestination(target.transform.position);
@@ -133,16 +134,6 @@ public class UnitScript : MonoBehaviour
     public int GetSpeed()
     {
         return unit.UnitCollectionSpeed;
-    }
-
-    public int GetWood()
-    {
-        return unit.WoodCollected;
-    }
-
-    public int GetStone()
-    {
-        return unit.StoneCollected;
     }
 
     public void SetWood(int wood)

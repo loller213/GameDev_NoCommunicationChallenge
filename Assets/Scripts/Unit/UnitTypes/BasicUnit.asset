@@ -19,6 +19,8 @@ MonoBehaviour:
   UnitAtk: 2
   UnitMoveSpd: 5
   UnitCollectionSpeed: 1
+  HP_UnitRegenAmt: 1
+  HP_UnitRegenSpd: 3
   WoodCollected: 0
   StoneCollected: 0
   typeOfUnit: 0
