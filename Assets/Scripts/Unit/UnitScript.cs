@@ -61,8 +61,7 @@ public class UnitScript : MonoBehaviour
         target = transform.position;
 
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -117,10 +116,7 @@ public class UnitScript : MonoBehaviour
         {
             ResourcesManager.Instance.StopAddingStone();
         }
-        //else if (collision.CompareTag(Home.tag))
-        //{
-            
-        //}
+   
         TypeOfState = UnitState.Idle;
         targetTag = "";
 

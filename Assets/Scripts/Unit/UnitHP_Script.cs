@@ -50,7 +50,7 @@ public class UnitHP_Script : MonoBehaviour
 
     }
 
-    public void SetUpHealthbar()
+    private void SetUpHealthbar()
     {
         HealthBar.maxValue = unit.UnitMaxHP;
         HealthBar.value = currentUnitHP;

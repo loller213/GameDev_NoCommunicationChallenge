@@ -37,7 +37,8 @@ public class EnemyNavMeshAI : MonoBehaviour
     {
         enemyRender = GetComponent<SpriteRenderer>();
         agent = GetComponent<NavMeshAgent>();
-
+        
+        //Can refactor this into a singleton function call instead
         playerTarget = GameObject.FindGameObjectWithTag("Player").transform;
 
         agent.updateRotation = false;
@@ -58,16 +59,17 @@ public class EnemyNavMeshAI : MonoBehaviour
 
     private void distFromPlayer()
     {
-        playerDist = Vector2.Distance(this.gameObject.transform.position, playerTarget.transform.position);
+        playerDist = Vector2.Distance(gameObject.transform.position, playerTarget.transform.position);
     }
 
     private void DistanceFromTarget()
     {
-        distFromCurrentTarget = Vector2.Distance(this.gameObject.transform.position, targetWaypoints[wayInt].transform.position);
+        distFromCurrentTarget = Vector2.Distance(gameObject.transform.position, targetWaypoints[wayInt].transform.position);
     }
 
     public void checkFlip()
     {
+        //Refactor into something simpler
         if (typeOfAI == AItype.WaypointAI || typeOfAI == AItype.RangedAI)
         {
             if (agent.desiredVelocity.x < 0)
@@ -78,10 +80,6 @@ public class EnemyNavMeshAI : MonoBehaviour
             {
                 enemyRender.flipX = true;
             }
-        }
-        else
-        {
-            return;
         }
     }
 

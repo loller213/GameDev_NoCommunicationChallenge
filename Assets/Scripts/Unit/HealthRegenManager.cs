@@ -10,6 +10,7 @@ public class HealthRegenManager : MonoBehaviour
 
     private void Start()
     {
+        //Shouldn't this be bool?
         canRegen = 0;
     }
 
@@ -17,6 +18,7 @@ public class HealthRegenManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            //This kind of condition uses a timer wherein healing has cooldowns, might need to rework this.
             if (unit.HP_UnitRegenSpd <= canRegen)
             {
                 EventManager.UPDATE_UNIT_HP?.Invoke(unit.HP_UnitRegenAmt);
