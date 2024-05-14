@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public enum AItype
 {
@@ -31,15 +33,16 @@ public class EnemyNavMeshAI : MonoBehaviour
     [SerializeField] private float playerDist;
  
     NavMeshAgent agent;
+    private UnitScript playerUnit;
 
-    // Start is called before the first frame update
     void Start()
     {
-        enemyRender = GetComponent<SpriteRenderer>();
-        agent = GetComponent<NavMeshAgent>();
-        
         //Can refactor this into a singleton function call instead
         playerTarget = GameObject.FindGameObjectWithTag("Player").transform;
+        
+        enemyRender = GetComponent<SpriteRenderer>();
+        agent = GetComponent<NavMeshAgent>();
+        playerUnit = playerTarget.GetComponent<UnitScript>();
 
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -50,14 +53,14 @@ public class EnemyNavMeshAI : MonoBehaviour
     void Update()
     {
         //agent.SetDestination(targetWaypoints[1].position);
-        distFromPlayer();
+        DistFromPlayer();
         DistanceFromTarget();
         CheckDist();
-        checkFlip();
+        CheckFlip();
 
     }
 
-    private void distFromPlayer()
+    private void DistFromPlayer()
     {
         playerDist = Vector2.Distance(gameObject.transform.position, playerTarget.transform.position);
     }
@@ -67,115 +70,96 @@ public class EnemyNavMeshAI : MonoBehaviour
         distFromCurrentTarget = Vector2.Distance(gameObject.transform.position, targetWaypoints[wayInt].transform.position);
     }
 
-    public void checkFlip()
+    private void CheckFlip()
     {
-        //Refactor into something simpler
-        if (typeOfAI == AItype.WaypointAI || typeOfAI == AItype.RangedAI)
-        {
-            if (agent.desiredVelocity.x < 0)
-            {
-                enemyRender.flipX = false;
-            }
-            else if (agent.desiredVelocity.x > 0)
-            {
-                enemyRender.flipX = true;
-            }
+     
+        if (agent.desiredVelocity.x < 0) 
+        { 
+            enemyRender.flipX = false;
+        }
+        else if (agent.desiredVelocity.x > 0) 
+        { 
+            enemyRender.flipX = true;
         }
     }
 
-    public void CheckDist()
+    private void CheckDist()
     {
-
-        if (typeOfAI == AItype.WaypointAI)
+        switch (typeOfAI)
         {
-
-            Debug.Log("Near Player Melee: " + isNearPlayer);
-            if (playerDist >= 3)
-            {
-                UseTypeOfAI(typeOfAI);
-                if (isNearPlayer == true)
-                {
-                    agent.speed = 3;
-                    isNearPlayer = false;
+            case AItype.WaypointAI:
+              
+                Debug.Log("Near Player Melee: " + isNearPlayer);
+                if (playerDist >= 3) 
+                { 
+                    UseTypeOfAI(); 
+                    if (isNearPlayer) 
+                    { 
+                        agent.speed = 3; 
+                        isNearPlayer = false;
+                    }
                 }
-            }
+                
+                if (playerDist <= 10 && isNearPlayer == false && !playerUnit._inSafeZone) 
+                { 
+                    if (agent.speed >= 3) 
+                    { 
+                        Debug.Log("Following Player - Melee AI"); 
+                        agent.SetDestination(playerTarget.transform.position);
+                    }
 
-            if (playerDist <= 10 && isNearPlayer == false)
-            {
-                if (agent.speed >= 3)
+                    if (playerDist <= 1.2f) 
+                    { 
+                        Debug.Log("Near Player - Melee AI"); 
+                        isNearPlayer = true;
+                    }
+
+                }
+                break;
+            
+            case AItype.RangedAI:
+                
+                Debug.Log("Near Player Ranged: " + isNearPlayer);
+                if (playerDist >= 8)
                 {
-                    Debug.Log("Following Player - Melee AI");
-                    agent.SetDestination(playerTarget.transform.position);
+                    UseTypeOfAI();
+                    if (isNearPlayer)
+                    {
+                        agent.speed = 3;
+                        isNearPlayer = false;
+                    }
                 }
 
-                if (playerDist <= 1.2f)
+                if (playerDist <= 12 && isNearPlayer == false && !playerUnit._inSafeZone)
                 {
-                    Debug.Log("Near Player - Melee AI");
-                    isNearPlayer = true;
-                }
+                    if (agent.speed >= 3)
+                    {
+                        Debug.Log("Following Player - Ranged AI");
+                        agent.SetDestination(playerTarget.transform.position);
+                    }
 
-            }
-            else if (playerDist <= 1.2f && isNearPlayer == true)
-            {
-                //  isNearPlayer = true;
-                agent.speed = 0;
-            }
+                    if (playerDist <= 8f)
+                    {
+                        Debug.Log("Near Player - Ranged AI");
+                        isNearPlayer = true;
+                    }
+
+                }
+                break;
         }
-
-        if (typeOfAI == AItype.RangedAI)
-        {
-
-            Debug.Log("Near Player Ranged: " + isNearPlayer);
-            if (playerDist >= 8)
-            {
-                UseTypeOfAI(typeOfAI);
-                if (isNearPlayer == true)
-                {
-                    agent.speed = 3;
-                    isNearPlayer = false;
-                }
-            }
-
-            if (playerDist <= 12 && isNearPlayer == false)
-            {
-                if (agent.speed >= 3)
-                {
-                    Debug.Log("Following Player - Ranged AI");
-                    agent.SetDestination(playerTarget.transform.position);
-                }
-
-                if (playerDist <= 8f)
-                {
-                    Debug.Log("Near Player - Ranged AI");
-                    isNearPlayer = true;
-                }
-
-            }
-            else if (playerDist <= 8f && isNearPlayer == true)
-            {
-                //  isNearPlayer = true;
-                agent.speed = 0;
-            }
-        }
-
     }
 
-    public void UseTypeOfAI(AItype AI)
+    private void UseTypeOfAI()
     {
-        if (typeOfAI == AItype.WaypointAI || typeOfAI == AItype.RangedAI)
-        {
-            if (Vector2.Distance(gameObject.transform.position, targetWaypoints[wayInt].transform.position) <= 2)
+        if (Vector2.Distance(gameObject.transform.position, targetWaypoints[wayInt].transform.position) <= 2) 
+        { 
+            wayInt++;
+            if (wayInt >= targetWaypoints.Length) 
             {
-                wayInt++;
-                if (wayInt >= targetWaypoints.Length)
-                {
-                    wayInt = 0;
-                }
+                wayInt = 0;
             }
-            Debug.Log("Not Following Player");
-            agent.SetDestination(targetWaypoints[wayInt].transform.position);
         }
-
+        Debug.Log("Not Following Player");
+        agent.SetDestination(targetWaypoints[wayInt].transform.position);
     }
-
 }

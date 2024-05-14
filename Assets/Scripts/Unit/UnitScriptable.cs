@@ -34,7 +34,7 @@ public class UnitScriptable : ScriptableObject
     public int UnitCollectionSpeed = 1; //Increases amount of resources gathered per second
 
     public int HP_UnitRegenAmt = 1;
-    public int HP_UnitRegenSpd = 3; //Higher = Slower
+    public float HP_UnitRegenSpd = 3; 
 
     public int WoodCollected = 0;
     public int StoneCollected = 0;
