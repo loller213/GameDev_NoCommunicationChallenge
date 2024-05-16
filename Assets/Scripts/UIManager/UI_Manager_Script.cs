@@ -16,9 +16,10 @@ public class UI_Manager_Script : MonoBehaviour
         EventManager.UPDATE_WOOD_UI += UpdateWoodUI;
         EventManager.UPDATE_STONE_UI += UpdateStoneUI;
     }
-
     private void Start()
     {
+        var itemQty = ResourcesManager.Instance.FetchInventory().InvCount; 
+        
         woodUI.text = "Wood: " + unit.WoodCollected;
         stoneUI.text = "Stone: " + unit.StoneCollected;
     }

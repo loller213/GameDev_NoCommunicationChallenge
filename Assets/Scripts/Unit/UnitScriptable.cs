@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum UnitType
 {
@@ -31,7 +32,7 @@ public class UnitScriptable : ScriptableObject
 
     public int UnitAtk = 2;
     public float UnitMoveSpd = 1.5f;
-    public int UnitCollectionSpeed = 1; //Increases amount of resources gathered per second
+    public int UnitCollectionAmount = 1; //Increases amount of resources gathered per second
 
     public int HP_UnitRegenAmt = 1;
     public float HP_UnitRegenSpd = 3; 

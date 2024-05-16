@@ -129,6 +129,8 @@ public class UnitScript : MonoBehaviour
         { 
             TypeOfState = UnitState.Resting; 
             _inSafeZone = true;
+            
+            
 
             EventManager.ON_DROP_RESOURCES?.Invoke();
             Debug.Log("Resting");
@@ -149,7 +151,6 @@ public class UnitScript : MonoBehaviour
         _inSafeZone = false;
         TypeOfState = UnitState.Idle;
         targetTag = "";
-
     }
 
     public UnitState ReturnUnitState()
@@ -157,9 +158,9 @@ public class UnitScript : MonoBehaviour
         return TypeOfState;
     }
 
-    public int GetSpeed()
+    public int CollectionAmount()
     {
-        return unit.UnitCollectionSpeed;
+        return unit.UnitCollectionAmount;
     }
 
     public void SetWood(int wood)
