@@ -20,7 +20,6 @@ public class EnemyScript : MonoBehaviour
 
     public void OnCollisionStay2D(Collision2D collision)
     {
-        //Maybe use a guard clause forr this one instead? or better, convert this into raycast 2d instead of collision 2d
         if (!collision.gameObject.CompareTag("Player")) return;
         
         AttackPlayer();
