@@ -21,7 +21,7 @@ MonoBehaviour:
   UnitCollectionAmount: 1
   HP_UnitRegenAmt: 1
   HP_UnitRegenSpd: 5
-  WoodCollected: 0
+  WoodCollected: 5
   StoneCollected: 0
   typeOfUnit: 0
   typeOfUnitState: 0

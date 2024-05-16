@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ResourcesManager : MonoBehaviour
@@ -23,6 +24,8 @@ public class ResourcesManager : MonoBehaviour
         }
     }
 
+    #region Wood
+
     public void StartAddingWood()
     {
         StartCoroutine(AddWood());
@@ -36,15 +39,21 @@ public class ResourcesManager : MonoBehaviour
     IEnumerator AddWood()
     {
         Debug.Log("Cutting");
-        if (_inventorySystem.GetItemType() == ItemType.Stone) yield return null; 
+        
+        //Can only collect one type of item at a time
+        if (_inventorySystem.GetItemType() == ItemType.Stone){Debug.LogError("Clear your inventory first!"); yield break;}; 
         
         while (UnitScript.Instance.ReturnUnitState() == UnitState.Cutting)
         {
             yield return new WaitForSeconds(1);
             _inventorySystem.AddItem(ItemType.Wood, UnitScript.Instance.CollectionAmount());
-            EventManager.UPDATE_WOOD_UI?.Invoke();
+            EventManager.UPDATE_INVENTORY_UI?.Invoke();
         }
     }
+
+    #endregion
+
+    #region Stone
 
     public void StartAddingStone()
     {
@@ -60,16 +69,19 @@ public class ResourcesManager : MonoBehaviour
     {
         Debug.Log("Mining");
         
-        if (_inventorySystem.GetItemType() == ItemType.Wood) yield return null;
+        //Can only collect one type of item at a time
+        if (_inventorySystem.GetItemType() == ItemType.Wood){Debug.LogError("Clear your inventory first!"); yield break;}
         
         while (UnitScript.Instance.ReturnUnitState() == UnitState.Mining)
         {
             yield return new WaitForSeconds(1);
             _inventorySystem.AddItem(ItemType.Stone, UnitScript.Instance.CollectionAmount());
-            EventManager.UPDATE_STONE_UI?.Invoke();
+            EventManager.UPDATE_INVENTORY_UI?.Invoke();
         }
     }
 
+    #endregion
+    
     public void DropItems()
     {
         switch (_inventorySystem.GetItemType())
@@ -89,6 +101,7 @@ public class ResourcesManager : MonoBehaviour
         }
         
         _inventorySystem.ClearInventory();
+        EventManager.UPDATE_INVENTORY_UI?.Invoke();
     }
 
     public InventorySystem FetchInventory()

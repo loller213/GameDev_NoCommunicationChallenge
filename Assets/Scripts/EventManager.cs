@@ -11,11 +11,13 @@ public class EventManager : MonoBehaviour
     //UI_Manager (UI_Manager_Script)
     public static Action UPDATE_WOOD_UI;
     public static Action UPDATE_STONE_UI;
+    public static Action UPDATE_INVENTORY_UI;
 
     //Unit Update HP (Unit Script)
     public static Action<int> UPDATE_UNIT_HP;
     
     //Actions
     public static Action ON_DROP_RESOURCES;
+    public static Action ON_ENEMY_HIT;
 
 }

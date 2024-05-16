@@ -1919,7 +1919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52628a3c4c510ae4aae5c5785e1a3e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventorySystem: {fileID: 0}
+  _inventorySystem: {fileID: 2006954313}
 --- !u!114 &821200102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1935,6 +1935,8 @@ MonoBehaviour:
   unit: {fileID: 11400000, guid: 016ef89b924de1b488df2b245bfd7425, type: 2}
   stoneUI: {fileID: 1174060846}
   woodUI: {fileID: 369860860}
+  invCountUI: {fileID: 1536810318}
+  invTypeUI: {fileID: 109421512}
 --- !u!1 &864865259
 GameObject:
   m_ObjectHideFlags: 0
@@ -5525,6 +5527,21 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
+--- !u!114 &2006954313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006954299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd446e4eaf45f5e4d9c31f1dc1d6c0a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemTypeOnInv: 2
+  InvCount: 0
+  _inventoryLimit: 10
 --- !u!1 &2043043117
 GameObject:
   m_ObjectHideFlags: 0
@@ -5867,8 +5884,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1536810317}
   - {fileID: 109421511}
+  - {fileID: 1536810317}
   m_Father: {fileID: 114150141}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6185,6 +6202,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1339742842751259165, guid: 228707b30ddcaca4eb0f61ef6a01e14f, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2006954313}
     - targetCorrespondingSourceObject: {fileID: 1339742842751259165, guid: 228707b30ddcaca4eb0f61ef6a01e14f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2006954306}

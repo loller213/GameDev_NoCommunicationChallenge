@@ -30,6 +30,7 @@ public class EnemyScript : MonoBehaviour
         if (!_canAttack) return;
         
         EventManager.UPDATE_UNIT_HP?.Invoke(-enemyUnit.enemyDamage);
+        EventManager.ON_ENEMY_HIT?.Invoke();
         _timer = enemyUnit.enemyBaseAtkCd; // Reset CD
     }
     

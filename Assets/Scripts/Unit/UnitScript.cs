@@ -130,8 +130,7 @@ public class UnitScript : MonoBehaviour
             TypeOfState = UnitState.Resting; 
             _inSafeZone = true;
             
-            
-
+            ResourcesManager.Instance.DropItems();
             EventManager.ON_DROP_RESOURCES?.Invoke();
             Debug.Log("Resting");
         }
