@@ -128,7 +128,9 @@ public class UnitScript : MonoBehaviour
         else if (collision.CompareTag(Home.tag)) 
         { 
             TypeOfState = UnitState.Resting; 
-            _inSafeZone = true; 
+            _inSafeZone = true;
+
+            EventManager.ON_DROP_RESOURCES?.Invoke();
             Debug.Log("Resting");
         }
     }

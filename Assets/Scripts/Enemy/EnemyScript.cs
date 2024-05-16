@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-
     [SerializeField] private EnemyScriptable enemyUnit;
-
-    //Might wanna move this on the scriptable object
-    [SerializeField] private float enemyBaseAttackCd;
-
+    
     private float _timer;
     private bool _canAttack;
 
     private void Start()
     {
-        _timer = enemyBaseAttackCd;
+        _timer = enemyUnit.enemyBaseAtkCd;
     }
 
     public void OnCollisionStay2D(Collision2D collision)
@@ -34,7 +30,7 @@ public class EnemyScript : MonoBehaviour
         if (!_canAttack) return;
         
         EventManager.UPDATE_UNIT_HP?.Invoke(-enemyUnit.enemyDamage);
-        _timer = enemyBaseAttackCd; // Reset CD
+        _timer = enemyUnit.enemyBaseAtkCd; // Reset CD
     }
     
     private void RunCdTimer()

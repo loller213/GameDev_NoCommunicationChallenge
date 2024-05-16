@@ -14,5 +14,8 @@ public class EventManager : MonoBehaviour
 
     //Unit Update HP (Unit Script)
     public static Action<int> UPDATE_UNIT_HP;
+    
+    //Actions
+    public static Action ON_DROP_RESOURCES;
 
 }
