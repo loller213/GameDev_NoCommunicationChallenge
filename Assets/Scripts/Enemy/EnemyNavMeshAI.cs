@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public enum AItype
 {
-    WaypointAI,
+    MeleeAI,
     RangedAI
 }
 
@@ -87,7 +87,7 @@ public class EnemyNavMeshAI : MonoBehaviour
     {
         switch (typeOfAI)
         {
-            case AItype.WaypointAI:
+            case AItype.MeleeAI:
               
                 Debug.Log("Near Player Melee: " + isNearPlayer);
                 if (playerDist >= 3) 

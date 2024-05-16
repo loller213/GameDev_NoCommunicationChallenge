@@ -28,6 +28,7 @@ public class EnemyScriptable : ScriptableObject
 
     public int enemyDamage = 1;
     public float enemyAtkSpd = 1;
+    public float enemyBaseAtkCd = 3;
 
     public float enemyMoveSpd = 2f;
 
