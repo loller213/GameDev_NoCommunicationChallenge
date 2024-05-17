@@ -89,11 +89,15 @@ public class ResourcesManager : MonoBehaviour
             case ItemType.Stone:
                 UnitScript.Instance.SetStone(_inventorySystem.InvCount);
                 EventManager.UPDATE_STONE_UI?.Invoke();
+                
+                UnitScript.Instance.CheckObjectives();
                 break;
             
             case ItemType.Wood:
                 UnitScript.Instance.SetWood(_inventorySystem.InvCount);
                 EventManager.UPDATE_WOOD_UI?.Invoke();
+                
+                UnitScript.Instance.CheckObjectives();
                 break;
             
             default:

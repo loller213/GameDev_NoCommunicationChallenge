@@ -12,6 +12,9 @@ public class EventManager : MonoBehaviour
     public static Action UPDATE_WOOD_UI;
     public static Action UPDATE_STONE_UI;
     public static Action UPDATE_INVENTORY_UI;
+    
+    //Objectives
+    public static Action<ItemType> ON_OBJECTIVE_COMPLETE;
 
     //Unit Update HP (Unit Script)
     public static Action<int> UPDATE_UNIT_HP;

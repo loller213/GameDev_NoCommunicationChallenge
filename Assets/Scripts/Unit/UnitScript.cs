@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
@@ -71,6 +72,8 @@ public class UnitScript : MonoBehaviour
 
         target = transform.position;
         _inSafeZone = false;
+
+        ResetResources();
 
     }
     
@@ -150,6 +153,27 @@ public class UnitScript : MonoBehaviour
         _inSafeZone = false;
         TypeOfState = UnitState.Idle;
         targetTag = "";
+    }
+
+    public void CheckObjectives()
+    {
+        if (unit.WoodCollected >= 10)
+        {
+            EventManager.ON_OBJECTIVE_COMPLETE?.Invoke(ItemType.Wood);
+            Game_Manager.Instance._isGameOver = true;
+        }
+        else if (unit.StoneCollected >= 15)
+        {
+            EventManager.ON_OBJECTIVE_COMPLETE?.Invoke(ItemType.Stone);
+            Game_Manager.Instance._isGameOver = true;
+        }
+            
+    }
+
+    private void ResetResources()
+    {
+        unit.WoodCollected = 0;
+        unit.StoneCollected = 0;
     }
 
     public UnitState ReturnUnitState()
