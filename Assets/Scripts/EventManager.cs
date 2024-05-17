@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class EventManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class EventManager : MonoBehaviour
     
     //Objectives
     public static Action<ItemType> ON_OBJECTIVE_COMPLETE;
+    public static Action ON_GAME_CLEAR;
 
     //Unit Update HP (Unit Script)
     public static Action<int> UPDATE_UNIT_HP;

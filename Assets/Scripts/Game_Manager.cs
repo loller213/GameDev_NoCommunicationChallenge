@@ -13,9 +13,9 @@ public class Game_Manager : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null) return;
-        
-        if (_instance != this)
+        if (_instance == null)
+            _instance = this;
+        else if (_instance != this)
             Destroy(gameObject);
     }
 
@@ -29,5 +29,10 @@ public class Game_Manager : MonoBehaviour
         if (_isGameOver && Input.GetKeyDown(KeyCode.Escape))
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
+    }
+
+    public bool IsGameOver()
+    {
+        return _isGameOver;
     }
 }

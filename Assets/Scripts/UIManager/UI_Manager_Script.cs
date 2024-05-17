@@ -27,6 +27,7 @@ public class UI_Manager_Script : MonoBehaviour
         EventManager.UPDATE_STONE_UI += UpdateStoneUI;
         EventManager.UPDATE_INVENTORY_UI += UpdateInventoryUI;
         EventManager.ON_OBJECTIVE_COMPLETE += UpdateObjectives;
+        EventManager.ON_GAME_CLEAR += DisplayClearScreen;
     }
     private void Start()
     {
@@ -79,5 +80,6 @@ public class UI_Manager_Script : MonoBehaviour
         EventManager.UPDATE_STONE_UI -= UpdateStoneUI;
         EventManager.UPDATE_INVENTORY_UI -= UpdateInventoryUI;
         EventManager.ON_OBJECTIVE_COMPLETE -= UpdateObjectives;
+        EventManager.ON_GAME_CLEAR -= DisplayClearScreen;
     }
 }

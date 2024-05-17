@@ -34,7 +34,7 @@ public class InventorySystem : MonoBehaviour
 
     public void AddItem(ItemType itemType, int qty)
     {
-        if (InvCount > _inventoryLimit){Debug.LogError("Inventory Full"); return;}
+        if (InvCount >= _inventoryLimit){Debug.LogError("Inventory Full"); return;}
         
         ItemTypeOnInv = itemType;
         InvCount += qty;
