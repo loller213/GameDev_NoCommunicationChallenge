@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,6 +27,9 @@ public class UnitScript : MonoBehaviour
     //Mouse Input Related
     [SerializeField] private Vector3 target;
     [SerializeField] private LayerMask inputLayerMask;
+
+    private LineRenderer _playerPath;
+    public bool _inSafeZone;
 
     private void Awake()
     {
@@ -53,58 +59,84 @@ public class UnitScript : MonoBehaviour
         //UnitStats
         agent.speed = unit.UnitMoveSpd;
         TypeOfUnit = unit.typeOfUnit;
+        
+        //Visual Aids
+        _playerPath = GetComponent<LineRenderer>();
+        _playerPath.startWidth = .15f;
+        _playerPath.endWidth = .15f;
+        _playerPath.positionCount = 0;
 
         Forest = GameObject.FindGameObjectWithTag("Forest");
         Quarry = GameObject.FindGameObjectWithTag("Quarry");
         Home = GameObject.FindGameObjectWithTag("Home");
 
         target = transform.position;
+        _inSafeZone = false;
+
+        ResetResources();
 
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             target.z = transform.position.z;
             agent.SetDestination(target);
         }
+        
+        if (agent.hasPath)
+            DrawPathLine();
     }
 
     //Used in On Clicked Manager 
-    public void SetDestination(GameObject target)
+    private void SetDestination(GameObject target)
     {
         agent.SetDestination(target.transform.position);
         targetTag = target.tag;
     }
 
+    private void DrawPathLine()
+    {
+        var pointCornerCount = agent.path.corners.Length;
+        var pointCorners = agent.path.corners;
+
+        _playerPath.positionCount = pointCornerCount;
+        _playerPath.SetPosition(0, transform.position);
+        
+        if (pointCornerCount < 2) return;
+
+        for (int i = 1; i < pointCornerCount; i++)
+        {
+            Vector3 pointPos = new Vector3(pointCorners[i].x, pointCorners[i].y, pointCorners[i].z);
+            _playerPath.SetPosition(i, pointPos);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Collided");
-
-        if (collision.CompareTag(targetTag) && !collision.CompareTag("Enemy"))
-        {
-            agent.ResetPath();
-
-            if (collision.CompareTag(Forest.tag))
-            {
-                TypeOfState = UnitState.Cutting;
-                ResourcesManager.Instance.StartAddingWood();
-            }
-            else if (collision.CompareTag(Quarry.tag))
-            {
-                TypeOfState = UnitState.Mining;
-                ResourcesManager.Instance.StartAddingStone();
-            }
-            else if (collision.CompareTag(Home.tag))
-            {
-                TypeOfState = UnitState.Resting;
-                Debug.Log("Resting");
-            }
+        
+        if (collision.CompareTag(Forest.tag))
+        { 
+            TypeOfState = UnitState.Cutting;
+            ResourcesManager.Instance.StartAddingWood();
         }
-
+        else if (collision.CompareTag(Quarry.tag))
+        { 
+            TypeOfState = UnitState.Mining; 
+            ResourcesManager.Instance.StartAddingStone();
+        }
+        else if (collision.CompareTag(Home.tag)) 
+        { 
+            TypeOfState = UnitState.Resting; 
+            _inSafeZone = true;
+            
+            ResourcesManager.Instance.DropItems();
+            EventManager.ON_DROP_RESOURCES?.Invoke();
+            Debug.Log("Resting");
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -117,13 +149,37 @@ public class UnitScript : MonoBehaviour
         {
             ResourcesManager.Instance.StopAddingStone();
         }
-        //else if (collision.CompareTag(Home.tag))
-        //{
-            
-        //}
+
+        _inSafeZone = false;
         TypeOfState = UnitState.Idle;
         targetTag = "";
+    }
+    
+    //refactor this into a better structure
+    public void CheckObjectives()
+    {
+        if (unit.WoodCollected >= 10)
+        {
+            EventManager.ON_OBJECTIVE_COMPLETE?.Invoke(ItemType.Wood);
+        }
+        else if (unit.StoneCollected >= 15)
+        {
+            EventManager.ON_OBJECTIVE_COMPLETE?.Invoke(ItemType.Stone);
+        }
 
+        if (unit.WoodCollected >= 10 && unit.StoneCollected >= 15)
+        {
+            EventManager.ON_GAME_CLEAR?.Invoke();
+            Game_Manager.Instance._isGameOver = true;
+        }
+    }
+
+    private void ResetResources()
+    {
+        unit.WoodCollected = 0;
+        unit.StoneCollected = 0;
+        EventManager.UPDATE_WOOD_UI?.Invoke();
+        EventManager.UPDATE_STONE_UI?.Invoke();
     }
 
     public UnitState ReturnUnitState()
@@ -131,9 +187,9 @@ public class UnitScript : MonoBehaviour
         return TypeOfState;
     }
 
-    public int GetSpeed()
+    public int CollectionAmount()
     {
-        return unit.UnitCollectionSpeed;
+        return unit.UnitCollectionAmount;
     }
 
     public void SetWood(int wood)

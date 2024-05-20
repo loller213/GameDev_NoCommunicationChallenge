@@ -16,5 +16,5 @@ MonoBehaviour:
   stateOfEnemy: 0
   enemyMaxHP: 5
   enemyDamage: 1
-  enemyAtkSpd: 0.5
+  enemyAtkSpd: 2
   enemyMoveSpd: 2
