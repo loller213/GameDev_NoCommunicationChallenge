@@ -13,7 +13,6 @@ public enum AItype
 
 public class EnemyNavMeshAI : MonoBehaviour
 {
-
     [Header("Type of AI")]
     [SerializeField] private AItype typeOfAI;
 
@@ -34,6 +33,10 @@ public class EnemyNavMeshAI : MonoBehaviour
  
     NavMeshAgent agent;
     private UnitScript playerUnit;
+
+    private PlayerChaseState playerChaseState = new PlayerChaseState();
+
+    private bool isFollowing = false;
 
     void Start()
     {
@@ -58,6 +61,10 @@ public class EnemyNavMeshAI : MonoBehaviour
         CheckDist();
         CheckFlip();
 
+        if (!playerChaseState.isChasing) return;
+        if (isFollowing) return;
+        isFollowing = true;
+        EventManager.ON_FOLLOW_PLAYER?.Invoke(playerChaseState);
     }
 
     private void DistFromPlayer()
@@ -106,6 +113,7 @@ public class EnemyNavMeshAI : MonoBehaviour
                     { 
                         Debug.Log("Following Player - Melee AI"); 
                         agent.SetDestination(playerTarget.transform.position);
+                        playerChaseState.isChasing = true;
                     }
 
                     if (playerDist <= 1.2f) 
@@ -136,6 +144,7 @@ public class EnemyNavMeshAI : MonoBehaviour
                     {
                         Debug.Log("Following Player - Ranged AI");
                         agent.SetDestination(playerTarget.transform.position);
+                        playerChaseState.isChasing = true;
                     }
 
                     if (playerDist <= 8f)
@@ -161,5 +170,7 @@ public class EnemyNavMeshAI : MonoBehaviour
         }
         Debug.Log("Not Following Player");
         agent.SetDestination(targetWaypoints[wayInt].transform.position);
+        playerChaseState.isChasing = false;
+        isFollowing = false;
     }
 }

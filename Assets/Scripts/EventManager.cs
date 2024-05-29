@@ -25,4 +25,5 @@ public class EventManager : MonoBehaviour
     public static Action ON_DROP_RESOURCES;
     public static Action ON_ENEMY_HIT;
 
+    public static Action<PlayerChaseState> ON_FOLLOW_PLAYER;
 }
