@@ -37,12 +37,12 @@ public class UI_Manager_Script : MonoBehaviour
         _gameClearPanel.SetActive(false);
     }
 
-    private void UpdateWoodUI()
+    public void UpdateWoodUI()
     {
         woodUI.text = "Wood: " + unit.WoodCollected;
     }
 
-    private void UpdateStoneUI()
+    public void UpdateStoneUI()
     {
         stoneUI.text = "Stone: " + unit.StoneCollected;
     }

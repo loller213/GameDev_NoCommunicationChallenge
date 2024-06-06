@@ -8,6 +8,9 @@ TagManager:
   - Forest
   - Quarry
   - Enemy
+  - PlayerSound
+  - Axe
+  - PickAxe
   layers:
   - Default
   - TransparentFX

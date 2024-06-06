@@ -30,6 +30,9 @@ public class UnitScript : MonoBehaviour
 
     private LineRenderer _playerPath;
     public bool _inSafeZone;
+    
+    //For sound detection
+    public bool _isPlayerMoving;
 
     private void Awake()
     {
@@ -85,9 +88,13 @@ public class UnitScript : MonoBehaviour
             target.z = transform.position.z;
             agent.SetDestination(target);
         }
-        
+
         if (agent.hasPath)
+        {
+            _isPlayerMoving = true;
             DrawPathLine();
+        }
+        else _isPlayerMoving = false;
     }
 
     //Used in On Clicked Manager 
@@ -132,6 +139,8 @@ public class UnitScript : MonoBehaviour
         { 
             TypeOfState = UnitState.Resting; 
             _inSafeZone = true;
+            CraftItem craftStatus = FindObjectOfType<CraftItem>();
+            craftStatus.CanCraft = true;
             
             ResourcesManager.Instance.DropItems();
             EventManager.ON_DROP_RESOURCES?.Invoke();
@@ -149,8 +158,13 @@ public class UnitScript : MonoBehaviour
         {
             ResourcesManager.Instance.StopAddingStone();
         }
+        else if (collision.CompareTag(Home.tag))
+        {
+            CraftItem craftStatus = FindObjectOfType<CraftItem>();
+            craftStatus.CanCraft = false;
 
-        _inSafeZone = false;
+            _inSafeZone = false;
+        }
         TypeOfState = UnitState.Idle;
         targetTag = "";
     }

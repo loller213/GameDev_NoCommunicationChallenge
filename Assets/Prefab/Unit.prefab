@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 3922311442043783677}
   - component: {fileID: 2243345200201743917}
   - component: {fileID: 6712331937454409866}
+  - component: {fileID: 446384221786580120}
   - component: {fileID: 3525096357658202577}
   - component: {fileID: 1423589518034448397}
   m_Layer: 0
@@ -160,6 +161,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   _inSafeZone: 0
+  _isPlayerMoving: 0
 --- !u!195 &6712331937454409866
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -182,6 +184,19 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &446384221786580120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339742842751259165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18291a011fc819c4cba94b19d881cb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundRadius: {fileID: 6212580698093351377}
 --- !u!50 &3525096357658202577
 Rigidbody2D:
   serializedVersion: 4
@@ -256,9 +271,11 @@ GameObject:
   - component: {fileID: 3719987725055041916}
   - component: {fileID: 3365382248849543791}
   - component: {fileID: 351015521921068349}
+  - component: {fileID: 2520339729770553059}
+  - component: {fileID: 78854960835589611}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: PlayerSound
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -366,3 +383,66 @@ MonoBehaviour:
   idleMagnitude: 2
   normalExpression: {fileID: 1158632828, guid: 6a14cedf9fd526d43833e27ff1119b62, type: 3}
   scaredExpression: {fileID: 454190789, guid: 6a14cedf9fd526d43833e27ff1119b62, type: 3}
+  pursuers: []
+--- !u!58 &2520339729770553059
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212580698093351377}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 7.5
+--- !u!50 &78854960835589611
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212580698093351377}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
