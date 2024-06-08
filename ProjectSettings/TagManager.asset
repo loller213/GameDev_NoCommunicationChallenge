@@ -11,6 +11,9 @@ TagManager:
   - PlayerSound
   - Axe
   - PickAxe
+  - Stone
+  - Wood
+  - Stick
   layers:
   - Default
   - TransparentFX

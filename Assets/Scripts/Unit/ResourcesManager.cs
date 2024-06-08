@@ -39,10 +39,9 @@ public class ResourcesManager : MonoBehaviour
     IEnumerator AddWood()
     {
         Debug.Log("Cutting");
-        
         //Can only collect one type of item at a time
-        if (_inventorySystem.GetItemType() == ItemType.Stone){Debug.LogError("Clear your inventory first!"); yield break;}; 
-        
+        if (_inventorySystem.GetItemType() == ItemType.Stone){Debug.LogError("Clear your inventory first!"); yield break;};
+
         while (UnitScript.Instance.ReturnUnitState() == UnitState.Cutting)
         {
             yield return new WaitForSeconds(1);
@@ -71,7 +70,7 @@ public class ResourcesManager : MonoBehaviour
         
         //Can only collect one type of item at a time
         if (_inventorySystem.GetItemType() == ItemType.Wood){Debug.LogError("Clear your inventory first!"); yield break;}
-        
+
         while (UnitScript.Instance.ReturnUnitState() == UnitState.Mining)
         {
             yield return new WaitForSeconds(1);

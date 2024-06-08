@@ -34,6 +34,9 @@ public class UnitScript : MonoBehaviour
     //For sound detection
     public bool _isPlayerMoving;
 
+    //For Checking if Player has utilities, if so, it can mine stone or chop wood.
+    [SerializeField] private GameObject PlayerUtilityHud;
+
     private void Awake()
     {
         if (_instance == null)
@@ -73,6 +76,8 @@ public class UnitScript : MonoBehaviour
         Quarry = GameObject.FindGameObjectWithTag("Quarry");
         Home = GameObject.FindGameObjectWithTag("Home");
 
+        PlayerUtilityHud.GetComponent<ItemUtilities>();
+
         target = transform.position;
         _inSafeZone = false;
 
@@ -91,6 +96,7 @@ public class UnitScript : MonoBehaviour
 
         if (agent.hasPath)
         {
+            //Enemy will follow player when inside sound detection collider even if inside home (DetectPlayerSound.cs)
             _isPlayerMoving = true;
             DrawPathLine();
         }
@@ -125,12 +131,12 @@ public class UnitScript : MonoBehaviour
     {
         Debug.Log("Collided");
         
-        if (collision.CompareTag(Forest.tag))
+        if (collision.CompareTag("Forest") && PlayerUtilityHud.GetComponent<ItemUtilities>().HasAxeUtility)
         { 
             TypeOfState = UnitState.Cutting;
             ResourcesManager.Instance.StartAddingWood();
         }
-        else if (collision.CompareTag(Quarry.tag))
+        else if (collision.CompareTag("Quarry") && PlayerUtilityHud.GetComponent<ItemUtilities>().HasPickAxeUtility)
         { 
             TypeOfState = UnitState.Mining; 
             ResourcesManager.Instance.StartAddingStone();
@@ -146,15 +152,32 @@ public class UnitScript : MonoBehaviour
             EventManager.ON_DROP_RESOURCES?.Invoke();
             Debug.Log("Resting");
         }
+        else if (collision.CompareTag("Stick"))
+        {
+            TypeOfState = UnitState.Cutting;
+            ResourcesManager.Instance.StartAddingWood();
+            EventManager.UPDATE_INVENTORY_UI?.Invoke();
+            ResourcesManager.Instance.StopAddingWood();
+            Destroy(collision.gameObject, 1f);
+
+        }
+        else if (collision.CompareTag("Stone"))
+        {
+            TypeOfState = UnitState.Mining;
+            ResourcesManager.Instance.StartAddingStone();
+            EventManager.UPDATE_INVENTORY_UI?.Invoke();
+            ResourcesManager.Instance.StopAddingStone();
+            Destroy(collision.gameObject, 1f);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(Forest.tag))
+        if (collision.CompareTag("Forest"))
         {
             ResourcesManager.Instance.StopAddingWood();
         }
-        else if (collision.CompareTag(Quarry.tag))
+        else if (collision.CompareTag("Quarry"))
         {
             ResourcesManager.Instance.StopAddingStone();
         }
