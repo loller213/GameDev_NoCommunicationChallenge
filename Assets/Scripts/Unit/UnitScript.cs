@@ -158,8 +158,9 @@ public class UnitScript : MonoBehaviour
             ResourcesManager.Instance.StartAddingWood();
             EventManager.UPDATE_INVENTORY_UI?.Invoke();
             ResourcesManager.Instance.StopAddingWood();
-            Destroy(collision.gameObject, 1f);
 
+            Destroy(collision.gameObject, 1f); // add respawn
+            //ResourceRespawn(collision.gameObject);
         }
         else if (collision.CompareTag("Stone"))
         {
@@ -167,7 +168,9 @@ public class UnitScript : MonoBehaviour
             ResourcesManager.Instance.StartAddingStone();
             EventManager.UPDATE_INVENTORY_UI?.Invoke();
             ResourcesManager.Instance.StopAddingStone();
+            
             Destroy(collision.gameObject, 1f);
+            //ResourceRespawn(collision.GetComponent<GameObject>());
         }
     }
 
@@ -218,6 +221,15 @@ public class UnitScript : MonoBehaviour
         EventManager.UPDATE_WOOD_UI?.Invoke();
         EventManager.UPDATE_STONE_UI?.Invoke();
     }
+
+
+    //[SerializeField] private float resourceRespawnTimer;
+    //private IEnumerator ResourceRespawn(GameObject resource)
+    //{
+    //    resource.SetActive(false);
+    //    yield return new WaitForSeconds(resourceRespawnTimer);
+    //    resource.SetActive(true);
+    //}
 
     public UnitState ReturnUnitState()
     {
