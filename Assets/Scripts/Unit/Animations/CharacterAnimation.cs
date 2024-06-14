@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +12,8 @@ public class PlayerChaseState
 
 public class CharacterAnimation : MonoBehaviour
 {
+    public static GameObject player { get; set; }
+
     //if you see the animation having extra jumps before character goes idle, make it higher, if the character slides, make it lower
     [SerializeField] private float idleMagnitude = 2f;
 
@@ -34,6 +37,8 @@ public class CharacterAnimation : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
 
         EventManager.ON_FOLLOW_PLAYER += ChasePlayer;
+
+        player = this.gameObject;
     }
 
     private void Update()

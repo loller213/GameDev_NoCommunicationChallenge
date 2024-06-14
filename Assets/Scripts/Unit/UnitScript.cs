@@ -30,6 +30,12 @@ public class UnitScript : MonoBehaviour
 
     private LineRenderer _playerPath;
     public bool _inSafeZone;
+    
+    //For sound detection
+    public bool _isPlayerMoving;
+
+    //For Checking if Player has utilities, if so, it can mine stone or chop wood.
+    [SerializeField] private GameObject PlayerUtilityHud;
 
     private void Awake()
     {
@@ -70,6 +76,8 @@ public class UnitScript : MonoBehaviour
         Quarry = GameObject.FindGameObjectWithTag("Quarry");
         Home = GameObject.FindGameObjectWithTag("Home");
 
+        PlayerUtilityHud.GetComponent<ItemUtilities>();
+
         target = transform.position;
         _inSafeZone = false;
 
@@ -85,9 +93,14 @@ public class UnitScript : MonoBehaviour
             target.z = transform.position.z;
             agent.SetDestination(target);
         }
-        
+
         if (agent.hasPath)
+        {
+            //Enemy will follow player when inside sound detection collider even if inside home (DetectPlayerSound.cs)
+            _isPlayerMoving = true;
             DrawPathLine();
+        }
+        else _isPlayerMoving = false;
     }
 
     //Used in On Clicked Manager 
@@ -118,12 +131,12 @@ public class UnitScript : MonoBehaviour
     {
         Debug.Log("Collided");
         
-        if (collision.CompareTag(Forest.tag))
+        if (collision.CompareTag("Forest") && PlayerUtilityHud.GetComponent<ItemUtilities>().HasAxeUtility)
         { 
             TypeOfState = UnitState.Cutting;
             ResourcesManager.Instance.StartAddingWood();
         }
-        else if (collision.CompareTag(Quarry.tag))
+        else if (collision.CompareTag("Quarry") && PlayerUtilityHud.GetComponent<ItemUtilities>().HasPickAxeUtility)
         { 
             TypeOfState = UnitState.Mining; 
             ResourcesManager.Instance.StartAddingStone();
@@ -132,25 +145,52 @@ public class UnitScript : MonoBehaviour
         { 
             TypeOfState = UnitState.Resting; 
             _inSafeZone = true;
+            CraftItem craftStatus = FindObjectOfType<CraftItem>();
+            craftStatus.CanCraft = true;
             
             ResourcesManager.Instance.DropItems();
             EventManager.ON_DROP_RESOURCES?.Invoke();
             Debug.Log("Resting");
         }
+        else if (collision.CompareTag("Stick"))
+        {
+            TypeOfState = UnitState.Cutting;
+            ResourcesManager.Instance.StartAddingWood();
+            EventManager.UPDATE_INVENTORY_UI?.Invoke();
+            ResourcesManager.Instance.StopAddingWood();
+
+            Destroy(collision.gameObject, 1f); // add respawn
+            //ResourceRespawn(collision.gameObject);
+        }
+        else if (collision.CompareTag("Stone"))
+        {
+            TypeOfState = UnitState.Mining;
+            ResourcesManager.Instance.StartAddingStone();
+            EventManager.UPDATE_INVENTORY_UI?.Invoke();
+            ResourcesManager.Instance.StopAddingStone();
+            
+            Destroy(collision.gameObject, 1f);
+            //ResourceRespawn(collision.GetComponent<GameObject>());
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag(Forest.tag))
+        if (collision.CompareTag("Forest"))
         {
             ResourcesManager.Instance.StopAddingWood();
         }
-        else if (collision.CompareTag(Quarry.tag))
+        else if (collision.CompareTag("Quarry"))
         {
             ResourcesManager.Instance.StopAddingStone();
         }
+        else if (collision.CompareTag(Home.tag))
+        {
+            CraftItem craftStatus = FindObjectOfType<CraftItem>();
+            craftStatus.CanCraft = false;
 
-        _inSafeZone = false;
+            _inSafeZone = false;
+        }
         TypeOfState = UnitState.Idle;
         targetTag = "";
     }
@@ -181,6 +221,15 @@ public class UnitScript : MonoBehaviour
         EventManager.UPDATE_WOOD_UI?.Invoke();
         EventManager.UPDATE_STONE_UI?.Invoke();
     }
+
+
+    //[SerializeField] private float resourceRespawnTimer;
+    //private IEnumerator ResourceRespawn(GameObject resource)
+    //{
+    //    resource.SetActive(false);
+    //    yield return new WaitForSeconds(resourceRespawnTimer);
+    //    resource.SetActive(true);
+    //}
 
     public UnitState ReturnUnitState()
     {

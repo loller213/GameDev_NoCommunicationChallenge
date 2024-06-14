@@ -7,6 +7,8 @@ public enum ItemType
 {
     Wood,
     Stone,
+    Axe,
+    PickAxe,
     None
 }
 
@@ -60,5 +62,10 @@ public class InventorySystem : MonoBehaviour
             ItemTypeOnInv = ItemType.None;
         
         EventManager.UPDATE_INVENTORY_UI?.Invoke();
+    }
+
+    public bool HasItem(ItemType item)
+    {
+        return ItemTypeOnInv == item;
     }
 }

@@ -36,7 +36,11 @@ public class EnemyNavMeshAI : MonoBehaviour
 
     private PlayerChaseState playerChaseState = new PlayerChaseState();
 
+    private Vector3 LastPlayerPos;
+    
     private bool isFollowing = false;
+
+    private bool hasHeardPlayerSound;
 
     void Start()
     {
@@ -160,7 +164,16 @@ public class EnemyNavMeshAI : MonoBehaviour
 
     private void UseTypeOfAI()
     {
-        if (Vector2.Distance(gameObject.transform.position, targetWaypoints[wayInt].transform.position) <= 2) 
+        if (hasHeardPlayerSound)
+        {
+            LastPlayerPos = playerTarget.transform.position;
+            agent.SetDestination(LastPlayerPos);
+            playerChaseState.isChasing = true;
+            isFollowing = true;
+            return;
+        }
+
+        if (Vector2.Distance(gameObject.transform.position, targetWaypoints[wayInt].transform.position) <= 2 && !hasHeardPlayerSound) 
         { 
             wayInt++;
             if (wayInt >= targetWaypoints.Length) 
@@ -169,8 +182,28 @@ public class EnemyNavMeshAI : MonoBehaviour
             }
         }
         Debug.Log("Not Following Player");
-        agent.SetDestination(targetWaypoints[wayInt].transform.position);
+        if (!hasHeardPlayerSound)
+        {
+            agent.SetDestination(targetWaypoints[wayInt].transform.position);
+            playerChaseState.isChasing = false;
+            isFollowing = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerSound")&& !hasHeardPlayerSound)
+        {
+            hasHeardPlayerSound = true;
+            Debug.Log("Collided by Sound collider");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        //Patrol last destination
+        hasHeardPlayerSound = false;
+        isNearPlayer = false;
         playerChaseState.isChasing = false;
-        isFollowing = false;
     }
 }
