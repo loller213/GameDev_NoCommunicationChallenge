@@ -3,8 +3,6 @@ using UnityEngine.AI;
 
 public class EnemyAnimation : MonoBehaviour
 {
-    private Transform player;
-
     private SpriteRenderer sprite;
     private NavMeshAgent agent;
     private Animator animator;
@@ -15,7 +13,7 @@ public class EnemyAnimation : MonoBehaviour
     private bool AvatarIsFacingLeft { get { return agent.velocity.x < 0; } }
 
     private float distance { get { return Vector2.Distance(agent.transform.position, CharacterAnimation.player.transform.position); } }
-    private bool PlayerIsInRange { get { return distance <= 7.5 ? true : false; } }
+    private bool PlayerIsInRange { get { return distance <= 7.5f ? true : false; } }
 
     private void Awake()
     {
@@ -42,7 +40,6 @@ public class EnemyAnimation : MonoBehaviour
         if (isChasing == state) return;
         isChasing = state;
         animator.SetBool("IsChasing", isChasing);
-        Debug.Log("Mouth Opens");
     }
 
 }
