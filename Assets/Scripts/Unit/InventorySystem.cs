@@ -9,6 +9,7 @@ public enum ItemType
     Stone,
     Axe,
     PickAxe,
+    Club,
     None
 }
 

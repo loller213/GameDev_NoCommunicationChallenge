@@ -8,11 +8,11 @@ public class CraftItem : MonoBehaviour
     [SerializeField]private UnitScriptable item;
     [SerializeField] private GameObject CraftingScreenHUD;
     [SerializeField] private InventorySystem _craftingItem;
+    [SerializeField] private UnitType unitType = UnitType.Villager;
     ItemUtilities playerUtility;
     UI_Manager_Script updateHUD;
     bool isCraftHudOpen;
     public bool CanCraft = false;
-
 
     private void Start()
     {
@@ -72,6 +72,30 @@ public class CraftItem : MonoBehaviour
                 updateHUD.UpdateWoodUI();
             }
             else Debug.LogError("You Already have this item");
+        }
+        else
+            Debug.Log("Not enough resources");
+    }
+
+    public void CraftClub()
+    {
+        int WoodCost = 10;
+        int StoneCost = 0;
+
+        if (item.WoodCollected >= WoodCost && item.StoneCollected >= StoneCost && unitType == UnitType.Soldier)
+        {
+            if (!playerUtility.HasClubUtility)
+            {
+                playerUtility.HasClubUtility = true;
+                item.WoodCollected -= WoodCost;
+                item.StoneCollected -= StoneCost;
+                _craftingItem.AddItem(ItemType.Club, 1);
+                _craftingItem.HasItem(ItemType.Club);
+                Debug.Log("Crafted Club");
+                updateHUD.UpdateStoneUI();
+                updateHUD.UpdateWoodUI();
+            }
+            else Debug.LogError("You are not a soldier");
         }
         else
             Debug.Log("Not enough resources");

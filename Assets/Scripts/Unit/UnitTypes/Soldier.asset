@@ -18,8 +18,12 @@ MonoBehaviour:
   UnitExp: 0
   UnitAtk: 2
   UnitMoveSpd: 3
-  UnitCollectionSpeed: 1
+  UnitCollectionAmount: 1
+  HP_UnitRegenAmt: 1
+  HP_UnitRegenSpd: 3
   WoodCollected: 0
   StoneCollected: 0
-  typeOfUnit: 0
+  typeOfUnit: 3
   typeOfUnitState: 0
+  TimeToTrain: 5
+  Prefab: {fileID: 2544316509112703999, guid: 3e0b108598c334b44ac2f95c08034e3f, type: 3}

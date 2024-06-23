@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 3525096357658202577}
   - component: {fileID: 1423589518034448397}
   m_Layer: 0
-  m_Name: Unit
+  m_Name: VillagerUnit
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: {fileID: 11400000, guid: 016ef89b924de1b488df2b245bfd7425, type: 2}
-  TypeOfUnit: 2
+  TypeOfUnit: 0
   TypeOfState: 0
   agent: {fileID: 0}
   Forest: {fileID: 0}
@@ -162,6 +162,7 @@ MonoBehaviour:
     m_Bits: 55
   _inSafeZone: 0
   _isPlayerMoving: 0
+  PlayerUtilityHud: {fileID: 0}
 --- !u!195 &6712331937454409866
 NavMeshAgent:
   m_ObjectHideFlags: 0

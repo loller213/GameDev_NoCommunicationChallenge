@@ -6,7 +6,6 @@ using UnityEngine.SubsystemsImplementation;
 
 public class UI_Manager_Script : MonoBehaviour
 {
-
     [SerializeField] private UnitScriptable unit;
 
     [Header("HUD UI")]

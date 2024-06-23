@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8db2bfef22565545b3d7ff939d9bbd2, type: 3}
-  m_Name: BasicUnit
+  m_Name: Villager
   m_EditorClassIdentifier: 
   UnitMaxHP: 10
   UnitLevelCap: 5
@@ -25,3 +25,5 @@ MonoBehaviour:
   StoneCollected: 0
   typeOfUnit: 0
   typeOfUnitState: 0
+  TimeToTrain: 1
+  Prefab: {fileID: 1339742842751259165, guid: 228707b30ddcaca4eb0f61ef6a01e14f, type: 3}
