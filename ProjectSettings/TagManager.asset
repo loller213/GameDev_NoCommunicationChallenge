@@ -14,6 +14,7 @@ TagManager:
   - Stone
   - Wood
   - Stick
+  - TrainingGrounds
   layers:
   - Default
   - TransparentFX

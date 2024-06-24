@@ -18,7 +18,8 @@ public enum UnitState
     Cutting,
     Mining,
     Fighting,
-    Transferring
+    Transferring,
+    Training
 }
 
 [CreateAssetMenu(fileName = "New Unit", menuName ="Add New Unit/Add Basic Unit")]
@@ -42,5 +43,9 @@ public class UnitScriptable : ScriptableObject
 
     public UnitType typeOfUnit;
     public UnitState typeOfUnitState;
+
+    // For Training
+    public float TimeToTrain;
+    public GameObject Prefab;
 
 }

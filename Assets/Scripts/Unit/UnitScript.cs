@@ -172,6 +172,10 @@ public class UnitScript : MonoBehaviour
             Destroy(collision.gameObject, 1f);
             //ResourceRespawn(collision.GetComponent<GameObject>());
         }
+        else if (collision.CompareTag("TrainingGrounds"))
+        {
+            TypeOfState = UnitState.Training;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -256,4 +260,13 @@ public class UnitScript : MonoBehaviour
         EventManager.ON_CLICK_SET_DESTINATION -= SetDestination;
     }
 
+    public int CheckUnitWood()
+    {
+        return unit.WoodCollected;
+    }
+
+    public int CheckUnitStone()
+    {
+        return unit.StoneCollected;
+    }
 }

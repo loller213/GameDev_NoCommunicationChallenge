@@ -12,9 +12,14 @@ public class ItemUtilities : MonoBehaviour
     bool isPickAxeActive;
     public bool HasPickAxeUtility;
 
+    bool isClubActive;
+    public bool HasClubUtility;
+
     [SerializeField] private GameObject AxeImage;
     [SerializeField] private GameObject PickAxeImage;
+    [SerializeField] private GameObject ClubImage;
 
+    private UnitType unit;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -24,6 +29,7 @@ public class ItemUtilities : MonoBehaviour
                 Debug.Log(AxeImage + "is active");
                 SetUtilityActive(isAxeActive, AxeImage);
                 DeselectUtility(isPickAxeActive, PickAxeImage);
+                DeselectUtility(isClubActive, ClubImage);
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -33,6 +39,18 @@ public class ItemUtilities : MonoBehaviour
                 Debug.Log(PickAxeImage + "is active");
                 SetUtilityActive(isPickAxeActive, PickAxeImage);
                 DeselectUtility(isAxeActive, AxeImage);
+                DeselectUtility(isClubActive, ClubImage);
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (HasClubUtility && !isClubActive)
+            {
+                Debug.Log(ClubImage + "is active");
+                SetUtilityActive(isClubActive, ClubImage);
+                DeselectUtility(isAxeActive, AxeImage);
+                DeselectUtility(isPickAxeActive, PickAxeImage);
             }
         }
     }
